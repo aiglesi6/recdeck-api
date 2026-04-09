@@ -1,23 +1,21 @@
 <template>
-  <nav class="navbar">
-    <h1>My App</h1>
-    <div>
-      <router-link to="/">Home</router-link>
-      <router-link to="/dashboard">Dashboard</router-link>
-    </div>
+  <nav>
+    <router-link to="/">Home</router-link> |
+    <router-link to="/search">Search</router-link> |
+    <router-link to="/bookmarked">Bookmarked</router-link>
   </nav>
 </template>
 
+<script setup></script>
+
 <style scoped>
-.navbar {
-  display: flex;
-  justify-content: space-between;
+nav {
   padding: 1rem;
-  background: #1e293b;
-  color: white;
+  background-color: #f4f4f4;
 }
 a {
-  margin-left: 1rem;
-  color: white;
+  margin-right: 1rem;
+  text-decoration: none;
+  color: #333;
 }
 </style>

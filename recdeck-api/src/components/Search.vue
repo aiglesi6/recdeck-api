@@ -1,29 +1,19 @@
 <template>
-  <div class="search">
-    <input type="text" placeholder="Search recs…" v-model="query" @keyup.enter="doSearch" />
+  <div>
+    <input v-model="keyword" placeholder="Enter keywords or select genre" />
+    <button @click="searchBooks">Give Me Books!</button>
   </div>
 </template>
 
-<script>
-export default {
-  name: 'Search',
-  data() {
-    return { query: '' }
-  },
-  methods: {
-    doSearch() {
-      alert(`Searching for "${this.query}"`)
-    }
-  }
+<script setup>
+import { ref } from 'vue'
+import { useRouter } from 'vue-router'
+
+const keyword = ref('')
+const router = useRouter()
+
+const searchBooks = () => {
+  // Pass the keyword to Results page (for now via query)
+  router.push({ name: 'Results', query: { q: keyword.value } })
 }
 </script>
-
-<style scoped>
-.search input {
-  padding: .5rem;
-  width: 100%;
-  max-width: 400px;
-  border: 1px solid #ccc;
-  border-radius: 4px;
-}
-</style>
