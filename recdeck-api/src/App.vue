@@ -1,7 +1,20 @@
+<template>
+  <div id="app">
+    <Navbar />
+    <div class="layout">
+      <Sidebar />
+      <router-view />
+    </div>
+  </div>
+</template>
+
 <script setup>
-import HelloWorld from './components/HelloWorld.vue'
+import Navbar from './components/Navbar.vue'
+import Sidebar from './components/Sidebar.vue'
 </script>
 
-<template>
-  <HelloWorld />
-</template>
+<style>
+.layout {
+  display: flex;
+}
+</style>
