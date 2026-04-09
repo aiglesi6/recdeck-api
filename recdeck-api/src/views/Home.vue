@@ -1,10 +1,10 @@
 <template>
-  <div class="page">
-    <h2>Home</h2>
-    <Card title="Welcome" content="This is your homepage." />
+  <div class="home">
+    <h1>Welcome to RecDeck</h1>
+    <!-- Add homepage layout here -->
   </div>
 </template>
 
-<script setup>
-import BookCard from '../components/BookCard.vue'
+<script>
+export default { name: 'Home' }
 </script>
