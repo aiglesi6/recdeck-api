@@ -1,15 +1,10 @@
 <template>
-  <div class="search-view">
-    <h2>Search</h2>
-    <Search />
+  <div>
+    <h2>Search for Books</h2>
+    <SearchBar />
   </div>
 </template>
 
-<script>
-import Search from '../components/Search.vue'
-
-export default {
-  name: 'SearchView',
-  components: { Search }
-}
+<script setup>
+import Search from '@/components/Search.vue'
 </script>

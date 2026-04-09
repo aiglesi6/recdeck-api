@@ -1,10 +1,8 @@
 <template>
-  <div class="home">
+  <div>
     <h1>Welcome to RecDeck</h1>
-    <!-- Add homepage layout here -->
+    <p>Get personalized book recommendations based on your favorite genres and keywords!</p>
   </div>
 </template>
 
-<script>
-export default { name: 'Home' }
-</script>
+<script setup></script>
