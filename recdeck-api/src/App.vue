@@ -1,20 +1,9 @@
 <template>
-  <div id="app">
-    <Navbar />
-    <div class="layout">
-      <Sidebar />
-      <router-view />
-    </div>
-  </div>
+  <Navbar />
+  <Home />
 </template>
 
 <script setup>
 import Navbar from './components/Navbar.vue'
-import Sidebar from './components/Sidebar.vue'
+import Home from './views/Home.vue'
 </script>
-
-<style>
-.layout {
-  display: flex;
-}
-</style>
