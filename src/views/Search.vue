@@ -1,6 +1,6 @@
 <template>
   <div class="search-page-container">
-    <h1>Find Your Next Book</h1>
+    <h1>Find Your Next Read</h1>
 
     <!-- Search form -->
     <div class="search-form">
@@ -106,6 +106,8 @@ const isBookBookmarked = (book) => {
 h1 {
   text-align: center;
   margin-bottom: 2rem;
+  font-family: 'Verdana', Geneva, Tahoma, sans-serif;
+  font-weight: bold;
 }
 
 .search-form {
