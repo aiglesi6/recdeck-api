@@ -1,33 +1,40 @@
 <template>
-  <div v-if="book" class="book-detail">
-    <h2>{{ book.title }}</h2>
-    <p v-if="book.author_name">Author: {{ book.author_name.join(', ') }}</p>
-    <p v-else-if="book.author">Author: {{ book.author }}</p>
-    <p v-if="book.subject">Genre: {{ book.subject.join(', ') }}</p>
-    <p v-if="book.first_publish_year">Published: {{ book.first_publish_year }}</p>
-    <p v-if="book.description">Description: {{ book.description }}</p>
+  <div class="book-detail-card">
+    <img
+      v-if="book.cover_i"
+      :src="`https://covers.openlibrary.org/b/id/${book.cover_i}-M.jpg`"
+      alt="Book cover"
+      class="book-cover"
+    />
+    <div class="book-info">
+      <h3>{{ book.title }}</h3>
+      <p v-if="book.author_name">Author: {{ book.author_name.join(', ') }}</p>
+      <p v-else-if="book.author">Author: {{ book.author }}</p>
+      <p v-if="book.subject">Genre: {{ book.subject.join(', ') }}</p>
+      <p v-if="book.first_publish_year">Published: {{ book.first_publish_year }}</p>
+      <p v-if="book.description">{{ book.description }}</p>
+    </div>
+    <div class="book-buttons">
+      <button @click="$emit('view', book)">View Details</button>
+      <button @click="$emit('bookmark', book)">
+        {{ isBookBookmarked ? 'Remove Bookmark' : 'Bookmark' }}
+      </button>
+    </div>
   </div>
-  <p v-else>Loading book details...</p>
 </template>
 
 <script setup>
-import { ref, onMounted } from 'vue'
-import { useRoute } from 'vue-router'
+import { computed } from 'vue'
 
-const route = useRoute()
-const title = route.params.title
-const book = ref(null)
+defineProps({
+  book: Object,
+  bookmarkedKeys: Array
+})
 
-onMounted(async () => {
-  try {
-    const res = await fetch(
-      `https://openlibrary.org/search.json?title=${encodeURIComponent(title)}`
-    )
-    const data = await res.json()
-    book.value = data.docs[0] || {}
-  } catch (err) {
-    console.error('Error fetching book details:', err)
-  }
+const emit = defineEmits(['view', 'bookmark'])
+
+const isBookBookmarked = computed(() => {
+  return bookmarkedKeys.includes(book.key)
 })
 </script>
 

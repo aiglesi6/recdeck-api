@@ -1,27 +1,30 @@
 <template>
-  <div class="book-detail-container">
-    <button class="back-button" @click="$router.back()">← Back</button>
-
-    <div v-if="loading" class="loading">
-      Loading book details...
+  <div class="book-detail-page">
+    <div v-if="loading">
+      <p>Loading book details...</p>
     </div>
 
-    <div v-else-if="error" class="error">
-      {{ error }}
-    </div>
+    <div v-else-if="book">
+      <h2>{{ book.title }}</h2>
+      <p v-if="book.authors">Author: {{ book.authors.map(a => a.name).join(', ') }}</p>
+      <p v-if="book.subjects">Genre: {{ book.subjects.join(', ') }}</p>
+      <p v-if="book.publish_date">Published: {{ book.publish_date }}</p>
+      <p v-if="book.description">
+        Description:
+        <span v-if="typeof book.description === 'string'">{{ book.description }}</span>
+        <span v-else-if="book.description.value">{{ book.description.value }}</span>
+      </p>
 
-    <div v-else class="book-details">
       <img
-        v-if="book.cover_i"
-        :src="`https://covers.openlibrary.org/b/id/${book.cover_i}-L.jpg`"
+        v-if="book.covers && book.covers.length"
+        :src="`https://covers.openlibrary.org/b/id/${book.covers[0]}-L.jpg`"
         alt="Book cover"
         class="book-cover"
       />
-      <h1>{{ book.title }}</h1>
-      <p v-if="book.author_name">Author: {{ book.author_name.join(', ') }}</p>
-      <p v-if="book.first_publish_year">First Published: {{ book.first_publish_year }}</p>
-      <p v-if="book.subject">Subjects: {{ book.subject.join(', ') }}</p>
-      <p v-if="book.description">Description: {{ book.description }}</p>
+    </div>
+
+    <div v-else>
+      <p>Book details not found.</p>
     </div>
   </div>
 </template>
@@ -31,49 +34,22 @@ import { ref, onMounted } from 'vue'
 import { useRoute } from 'vue-router'
 
 const route = useRoute()
-const title = route.params.title || ''
+const bookKey = route.params.key
 
-const book = ref({})
+const book = ref(null)
 const loading = ref(true)
-const error = ref('')
 
-const fetchBook = async () => {
-  loading.value = true
-  error.value = ''
-
+onMounted(async () => {
   try {
-    const res = await fetch(
-      `https://openlibrary.org/search.json?title=${encodeURIComponent(title)}`
-    )
-    const data = await res.json()
-
-    if (data.docs && data.docs.length > 0) {
-      // Take the first result
-      book.value = data.docs[0]
-
-      if (book.value.key) {
-        const workRes = await fetch(`https://openlibrary.org${book.value.key}.json`)
-        const workData = await workRes.json()
-        if (workData.description) {
-          book.value.description =
-            typeof workData.description === 'string'
-              ? workData.description
-              : workData.description.value
-        }
-      }
-    } else {
-      error.value = 'No book found with that title.'
-    }
+    const res = await fetch(`https://openlibrary.org/books/${bookKey}.json`)
+    if (!res.ok) throw new Error('Book not found')
+    book.value = await res.json()
   } catch (err) {
-    console.error(err)
-    error.value = 'Failed to fetch book details.'
+    console.error('Error fetching book details:', err)
+    book.value = null
   } finally {
     loading.value = false
   }
-}
-
-onMounted(() => {
-  fetchBook()
 })
 </script>
 
