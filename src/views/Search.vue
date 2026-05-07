@@ -30,9 +30,14 @@
             <p v-if="book.author_name">Author: {{ book.author_name.join(', ') }}</p>
             <p v-if="book.first_publish_year">Published: {{ book.first_publish_year }}</p>
           </div>
-          <button @click="toggleBookmark(book)">
-            {{ isBookBookmarked(book) ? 'Remove Bookmark' : 'Bookmark' }}
-          </button>
+
+          <!-- Buttons -->
+          <div class="book-buttons">
+            <button @click="viewDetails(book)">View Details</button>
+            <button @click="toggleBookmark(book)">
+              {{ isBookBookmarked(book) ? 'Remove Bookmark' : 'Bookmark' }}
+            </button>
+          </div>
         </div>
       </div>
     </div>
@@ -45,12 +50,13 @@
 
 <script setup>
 import { ref } from 'vue'
+import { useRouter } from 'vue-router'
 
 const query = ref('')
 const books = ref([])
 const searched = ref(false)
+const router = useRouter()
 
-// Bookmark list stored in localStorage for persistence
 const bookmarks = ref(JSON.parse(localStorage.getItem('bookmarks') || '[]'))
 
 // Save bookmarks to localStorage
@@ -58,7 +64,6 @@ const saveBookmarks = () => {
   localStorage.setItem('bookmarks', JSON.stringify(bookmarks.value))
 }
 
-// Search Open Library API
 const searchBooks = async () => {
   if (!query.value.trim()) return
 
@@ -76,7 +81,6 @@ const searchBooks = async () => {
   }
 }
 
-// Bookmark functionality
 const toggleBookmark = (book) => {
   const index = bookmarks.value.findIndex(b => b.key === book.key)
   if (index !== -1) {
@@ -89,6 +93,12 @@ const toggleBookmark = (book) => {
 
 const isBookBookmarked = (book) => {
   return bookmarks.value.some(b => b.key === book.key)
+}
+
+const viewDetails = (book) => {
+  if (!book.key) return alert('No key available for this book');
+  const workKey = book.key.startsWith('/works/') ? book.key : `/works/${book.key}`;
+  router.push({ name: 'BookDetail', params: { key: workKey } });
 }
 </script>
 
@@ -169,14 +179,19 @@ h1 {
 
 .book-info {
   text-align: center;
+  margin-bottom: 0.5rem;
 }
 
 .book-info h3 {
   margin: 0.5rem 0;
 }
 
-.book-card button {
-  margin-top: 0.5rem;
+.book-buttons {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.book-buttons button {
   padding: 0.3rem 0.8rem;
   border-radius: 0.5rem;
   border: none;
@@ -186,7 +201,7 @@ h1 {
   font-size: 0.9rem;
 }
 
-.book-card button:hover {
+.book-buttons button:hover {
   background-color: #a4714f;
 }
 </style>

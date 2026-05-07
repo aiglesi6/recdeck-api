@@ -34,21 +34,33 @@ import { ref, onMounted } from 'vue'
 import { useRoute } from 'vue-router'
 
 const route = useRoute()
-const bookKey = route.params.key
-
+const workKey = route.params.key
 const book = ref(null)
-const loading = ref(true)
+const authors = ref([])
+const coverUrl = ref('')
 
 onMounted(async () => {
   try {
-    const res = await fetch(`https://openlibrary.org/books/${bookKey}.json`)
-    if (!res.ok) throw new Error('Book not found')
-    book.value = await res.json()
+    const res = await fetch(`https://openlibrary.org${workKey}.json`)
+    const data = await res.json()
+    book.value = data
+
+    if (data.authors) {
+      const authorNames = await Promise.all(
+        data.authors.map(async (a) => {
+          const res = await fetch(`https://openlibrary.org${a.author.key}.json`)
+          const d = await res.json()
+          return d.name
+        })
+      )
+      authors.value = authorNames
+    }
+
+    if (data.covers && data.covers.length > 0) {
+      coverUrl.value = `https://covers.openlibrary.org/b/id/${data.covers[0]}-L.jpg`
+    }
   } catch (err) {
     console.error('Error fetching book details:', err)
-    book.value = null
-  } finally {
-    loading.value = false
   }
 })
 </script>
