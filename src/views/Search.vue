@@ -107,7 +107,6 @@ h1 {
   text-align: center;
   margin-bottom: 2rem;
   font-family: 'Verdana', Geneva, Tahoma, sans-serif;
-  font-weight: bold;
 }
 
 .search-form {
