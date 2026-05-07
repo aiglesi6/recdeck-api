@@ -16,10 +16,23 @@ export default {
 
 <style>
 nav {
+  gap: 2rem;
   padding: 1rem;
-  background: #D2B48C;
+  align-items: center;
+  display: flex;
+  background: #8b4513;
 }
+
 nav a {
+  color:#FFDAB9;
+  text-decoration: none;
+  font-weight: bold;
+  transition: color 0.2s, transform 0.2s;
+}
+
+nav a:hover {
   margin-right: 1rem;
+  color: #FFDAB9;
+  transform: translateY(-2px);
 }
 </style>
