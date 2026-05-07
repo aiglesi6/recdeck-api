@@ -17,7 +17,7 @@ export default {
 <style>
 nav {
   padding: 1rem;
-  background: #f5f5f5;
+  background: #D2B48C;
 }
 nav a {
   margin-right: 1rem;

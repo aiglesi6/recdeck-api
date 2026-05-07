@@ -51,10 +51,8 @@ const goToBookmarked = () => {
   left: 0;
   width: 100%;
   height: 100%;
-  background-image: url('/library.jpg');
-  background-size: cover;
-  background-position: center;
-  filter: blur(8px);
+  background: linear-gradient(to bottom right, #D2B48C, #8B4513);
+  filter: blur(0);
   transform: scale(1.05);
   z-index: 0;
 }
