@@ -95,8 +95,12 @@ const isBookBookmarked = (book) => {
 <style scoped>
 .search-page-container {
   padding: 2rem;
-  max-width: 1000px;
-  margin: auto;
+  width: 100%;
+  max-width: 4000px;
+  margin: 0;
+  background: linear-gradient(to bottom right, #D2B48C, #8B4513);
+  min-height: 100vh;
+  box-sizing: border-box;
 }
 
 h1 {
